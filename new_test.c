@@ -50,6 +50,7 @@ int main(void)
                 if (strcmp(command, "exit") == 0) {
 			exit(0);
                 }
+		printf("before env\n");
 		if (strcmp(command, "env") == 0)
 		{
 			for(j = 0; environ[j] != NULL;  j++)
@@ -62,6 +63,7 @@ int main(void)
 
 		if (pid == 0)
 		{
+			printf("in child\n");
 			/*//shell prompt symb
 			printf("%s", shell_prompt_symb);
 
@@ -154,12 +156,16 @@ int main(void)
 		else
 		{
 			//waiter = wait(&status);
+			printf("in parent\n");
 			wait(&status);
+			printf("in parent 2.0\n");
 			//free(command), free(command_copy), free(argv);
 		}
 	
 	}
-			wait(&status);
-			//free(command), free(command_copy), free(argv);
+			
+			free(command), free(command_copy), free(argv);
+
+			return (0);
 		}
 	
