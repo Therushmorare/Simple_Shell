@@ -23,6 +23,7 @@ int main(void)
 	pid_t pid;  //waiter;
 	//const char *path = getenv("PATH");
 	char *path_copy;
+	char **env_s = environ;
 	//char full_path[1024];
 
 	//run the shell in an infinite loop only to be exited by the exit() sys call
@@ -51,6 +52,10 @@ int main(void)
                 }
 		if (strcmp(command, "env") == 0)
 		{
+			for(; *env_s; env_s++)
+			{
+				printf("%s\n", *env_s);
+			}
 		}
 
 		pid = fork();
@@ -154,7 +159,7 @@ int main(void)
 		}
 	
 	}
-	free(command), free(command_copy), free(argv), free(path_copy);
-
-	return (0);
-}
+			wait(&status);
+			//free(command), free(command_copy), free(argv);
+		}
+	
