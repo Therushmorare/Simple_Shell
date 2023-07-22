@@ -17,13 +17,13 @@ int main(void)
 	ssize_t chars_input;
 	size_t n = 0;
 	int argc = 0, i = 0, is_on = 1, exec, status;
+	int j;
 	const char *delim = " \n";
 	char *token;
 	char **argv = NULL;
 	pid_t pid;  //waiter;
 	//const char *path = getenv("PATH");
 	char *path_copy;
-	char **env_s = environ;
 	//char full_path[1024];
 
 	//run the shell in an infinite loop only to be exited by the exit() sys call
@@ -52,9 +52,9 @@ int main(void)
                 }
 		if (strcmp(command, "env") == 0)
 		{
-			for(; *env_s; env_s++)
+			for(j = 0; environ[j] != NULL;  j++)
 			{
-				printf("%s\n", *env_s);
+				printf("%s\n", environ[j]);
 			}
 		}
 
