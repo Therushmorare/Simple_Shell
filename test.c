@@ -27,8 +27,9 @@ int main(void)
 	//run the shell in an infinite loop only to be exited by the exit() sys call
 	while(is_on)
 	{
+		/*
 		//pid = fork();
-		
+		printf("Iteration\n");
 		printf("%s", shell_prompt_symb);
 
                         //get user input and print it
@@ -70,11 +71,11 @@ int main(void)
                                // break;
 
                                 //system("exit");
-			}
+			}*/
 		pid = fork();
 		if (pid == 0)
-		{/*
-			
+		{
+			//printf("argv[0] in child: %s\n", argv[0]);
 			
 			//shell prompt symb
 			printf("%s", shell_prompt_symb);
@@ -92,12 +93,12 @@ int main(void)
 			//print user command back
 			//printf("%s\n", user_input);//and i told you about printing the getline values
 
-		**
+		/**
 		 * before using execution commands and system calls
 		 * all i need is to tokenize user_input by saving it to user_input_cpy
 		 * save the user_input_cpy in tokens
 		 * use tokens to validate user input 
-		 *
+		 */
 
 
 			command_copy = strdup(command);
@@ -127,12 +128,14 @@ int main(void)
 				printf("exit here\n");
 				is_on = 0;
 				//exit(0);
-			//	break;
+				break;
 				
 				system("exit");
 			}
 			printf("after exit\n");	
-			*/
+			
+			printf("in child process\n");
+			printf("argv[0] in child: %s\n", argv[0]);
 			const char *path = getenv("PATH");	
 			path_copy = strdup(path);
 			token = strtok(path_copy, ":");
@@ -165,9 +168,22 @@ int main(void)
 		}
 		else
 		{
-		
+			printf("in parent process\n");
+			//printf("argv[0]: %s\n", argv[0]);
+                        /*if (strcmp(argv[0], "exit") == 0)
+                        {
+                                printf("exit here\n");
+                                is_on = 0;
+                                //exit(0);
+                        //      break;
+
+                                system("exit");
+                        }
+                        printf("after exit\n");*/
+	//		printf("argv[0] in child: %s\n", argv[0]);
 			waiter = wait(&status);
-			free(command), free(command_copy), free(argv), free(path_copy);
+			printf("in parent process again\n");
+			free(command), free(command_copy), free(argv);
 		}
 		//free(command), free(command_copy), free(argv), free(path_copy);
 	}

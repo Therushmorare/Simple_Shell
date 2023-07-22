@@ -49,6 +49,9 @@ int main(void)
                 if (strcmp(command, "exit") == 0) {
 			exit(0);
                 }
+		if (strcmp(command, "env") == 0)
+		{
+		}
 
 		pid = fork();
 
@@ -147,9 +150,11 @@ int main(void)
 		{
 			//waiter = wait(&status);
 			wait(&status);
-			free(command), free(command_copy), free(argv);
+			//free(command), free(command_copy), free(argv);
 		}
+	
 	}
+	free(command), free(command_copy), free(argv), free(path_copy);
 
 	return (0);
 }
