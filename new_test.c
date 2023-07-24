@@ -1,32 +1,24 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <sys/stat.h>
+#include "shell.h"
 
-extern char **environ;
+/**
+ * main - function that creates a shell
+ *
+ * Return: always 0
+ */
 
 int main(void)
 {
-	char *shell_prompt_symb = "$ ";
-	char *command = NULL;
-	char *command_copy = NULL;
+	char *shell_prompt_symb = "$ ", *command = NULL, *command_copy = NULL, *token;
 	ssize_t chars_input;
 	size_t n = 0;
-	int argc = 0, i = 0, is_on = 1, exec, status;
-	const char *delim = " \n";
-	char *token;
-	char **argv = NULL;
+	int argc = 0, i = 0, is_on = 1, exec, status, exit_status;
+	const char *delim = " \n", *path = getenv("PATH");
 	pid_t pid;
-	char *path_copy;
-	char full_path[1024];
+	char full_path[1024], *path_copy, **argv = NULL;
 
 	while (is_on)
 	{
 		printf("%s", shell_prompt_symb);
-
 		chars_input = getline(&command, &n, stdin);
 
 		if (chars_input == -1)
@@ -38,14 +30,20 @@ int main(void)
 		{
 			command[chars_input - 1] = '\0';
 		}
-
 		if (strcmp(command, "exit") == 0)
 		{
 			exit(0);
 		}
+		else if (strncmp(command, "exit",  4) == 0)
+		{
+			token = strtok(command, delim);
+			token = strtok(NULL, delim);
+			exit_status = atoi(token);
+
+			exit(exit_status);
+		}
 
 		pid = fork();
-
 		if (pid == 0)
 		{
 
@@ -69,7 +67,6 @@ int main(void)
 			}
 			argv[i] = NULL;
 
-			const char *path = getenv("PATH");
 			path_copy = strdup(path);
 			token = strtok(path_copy, ":");
 			while (token)
@@ -102,9 +99,8 @@ int main(void)
 		{
 			wait(&status);
 		}
-	
 	}
-			
+
 		free(command), free(command_copy), free(argv);
 
 		return (0);
