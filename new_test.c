@@ -28,21 +28,21 @@ int main(void)
 		printf("%s", shell_prompt_symb);
 
 		chars_input = getline(&command, &n, stdin);
-	
+
 		if (chars_input == -1)
-                {
+		{
 			printf("No input provided\n");
 			return (-1);
-                }
-                if (command[chars_input - 1] == '\n')
-                {
+		}
+		if (command[chars_input - 1] == '\n')
+		{
 			command[chars_input - 1] = '\0';
-                }
+		}
 
-                if (strcmp(command, "exit") == 0)
-	       	{
+		if (strcmp(command, "exit") == 0)
+		{
 			exit(0);
-                }
+		}
 
 		pid = fork();
 
@@ -69,15 +69,15 @@ int main(void)
 			}
 			argv[i] = NULL;
 
-			const char *path = getenv("PATH");	
+			const char *path = getenv("PATH");
 			path_copy = strdup(path);
 			token = strtok(path_copy, ":");
 			while (token)
 			{
 				snprintf(full_path, sizeof(full_path), "%s/%s", token, argv[0]);
-	
+
 				struct stat st;
-				
+
 				if (stat(full_path, &st) == 0)
 				{
 					argv[0] = full_path;
@@ -90,7 +90,7 @@ int main(void)
 				}
 				token = strtok(NULL, ":");
 			}
-			
+
 			exec = execve(argv[0], argv, environ);
 			if (exec == -1)
 			{
