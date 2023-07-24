@@ -28,7 +28,7 @@ int main(void)
 		printf("%s", shell_prompt_symb);
 
 		chars_input = getline(&command, &n, stdin);
-		
+	
 		if (chars_input == -1)
                 {
 			printf("No input provided\n");
@@ -39,7 +39,8 @@ int main(void)
 			command[chars_input - 1] = '\0';
                 }
 
-                if (strcmp(command, "exit") == 0) {
+                if (strcmp(command, "exit") == 0)
+	       	{
 			exit(0);
                 }
 
@@ -68,7 +69,6 @@ int main(void)
 			}
 			argv[i] = NULL;
 
-			
 			const char *path = getenv("PATH");	
 			path_copy = strdup(path);
 			token = strtok(path_copy, ":");
@@ -105,7 +105,7 @@ int main(void)
 	
 	}
 			
-			free(command), free(command_copy), free(argv);
+		free(command), free(command_copy), free(argv);
 
-			return (0);
-		}
+		return (0);
+}
