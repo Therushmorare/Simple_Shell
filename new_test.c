@@ -23,13 +23,13 @@ int main(void)
 	char *path_copy;
 	char full_path[1024];
 
-	while(is_on)
+	while (is_on)
 	{
 		printf("%s", shell_prompt_symb);
 
 		chars_input = getline(&command, &n, stdin);
 		
-		if(chars_input == -1)
+		if (chars_input == -1)
                 {
 			printf("No input provided\n");
 			return (-1);
@@ -60,7 +60,7 @@ int main(void)
 			argv = malloc(sizeof(char *) * argc);
 
 			token = strtok(command_copy, delim);
-			while(token)
+			while (token)
 			{
 				argv[i] = token;
 				token = strtok(NULL, delim);
