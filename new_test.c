@@ -13,30 +13,23 @@ int main(void)
 	char *shell_prompt_symb = "$ ";
 	char *command = NULL;
 	char *command_copy = NULL;
-	//char *ext_command = NULL;
 	ssize_t chars_input;
 	size_t n = 0;
 	int argc = 0, i = 0, is_on = 1, exec, status;
-	int j;
 	const char *delim = " \n";
 	char *token;
 	char **argv = NULL;
-	pid_t pid;  //waiter;
-	//const char *path = getenv("PATH");
+	pid_t pid;
 	char *path_copy;
-	//char full_path[1024];
+	char full_path[1024];
 
-	//run the shell in an infinite loop only to be exited by the exit() sys call
 	while(is_on)
 	{
-		//shell prompt symb
 		printf("%s", shell_prompt_symb);
 
-		//get user input and print it
 		chars_input = getline(&command, &n, stdin);
 		
-		//validate getline, use -1 as condition check since it returns -1 on success
-		if(chars_input == -1)//remeber this is what we spoke about during our meeting
+		if(chars_input == -1)
                 {
 			printf("No input provided\n");
 			return (-1);
@@ -46,26 +39,14 @@ int main(void)
 			command[chars_input - 1] = '\0';
                 }
 
-                // Compare the string with exit
                 if (strcmp(command, "exit") == 0) {
 			exit(0);
                 }
-		//printf("before env\n");
-		/*if (strcmp(command, "env") == 0)
-		{
-			printf("print env\n");
-			for(j = 0; environ[j] != NULL;  j++)
-			{
-				printf("%s\n", environ[j]);
-			}
-		}*/
 
 		pid = fork();
 
 		if (pid == 0)
 		{
-			//printf("in child\n");
-
 
 			command_copy = strdup(command);
 
@@ -93,7 +74,6 @@ int main(void)
 			token = strtok(path_copy, ":");
 			while (token)
 			{
-				char full_path[1024];
 				snprintf(full_path, sizeof(full_path), "%s/%s", token, argv[0]);
 	
 				struct stat st;
@@ -120,11 +100,7 @@ int main(void)
 		}
 		else
 		{
-			//waiter = wait(&status);
-			//printf("in parent\n");
 			wait(&status);
-			//printf("in parent 2.0\n");
-			//free(command), free(command_copy), free(argv);
 		}
 	
 	}
@@ -133,4 +109,3 @@ int main(void)
 
 			return (0);
 		}
-	
