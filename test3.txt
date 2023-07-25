@@ -21,3 +21,26 @@ token2 = strtok(NULL, "="); // VALUE
 value = token2;
 
 call_env(key, value, 1);
+
+/* focus here */
+//apply strtok to separate echo from $$
+if (strcmp(command, "$$") == 0)
+{
+	pid = getpid()
+	printf("%u\n", pid);
+}
+
+//apply strtok to separate echo from $?
+if (strcmp(command, "$?") == 0)
+{
+	status = system(command)
+	printf("%d\n", status)
+}
+
+//apply strtok to separate echo from $PATH
+if (strcmp(command, "$PATH") == 0)
+{
+	char *path_name = getenv("PATH")
+	printf("%s\n", path_name)
+}
+
