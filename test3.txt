@@ -14,7 +14,7 @@ else{
 // setenv KEY=VALUE
 token1 = strtok(command, delim); // setenv
 token1 = strtok(NULL, delim); // KEY=VALUE
-
+------
 token2 = strtok(token1, "="); //KEY
 key = token2;
 token2 = strtok(NULL, "="); // VALUE
