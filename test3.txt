@@ -1,0 +1,14 @@
+def call_env(var_name, val, overwrite_status_num):
+	setenv(var_name, val, overwrite_status_num)
+
+//actual code
+if (strcmp(command, "setenv") == 0) {
+        if (argc != 3) {
+            fprintf(stderr, "setenv: Incorrect number of arguments\n");
+            return 1;
+  	}
+else{
+	//assume we tokenized the string
+	call_env(token1, token2, token3);
+}
+
