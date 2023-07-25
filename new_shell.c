@@ -32,6 +32,30 @@ int main(void)
 		{
 			command[chars_input - 1] = '\0';
 		}
+
+		command_copy = strdup(command);
+
+                token = strtok(command, delim);
+                while (token)
+                {
+                	token = strtok(NULL, delim);
+               		argc++;
+               	}
+
+              	argv = malloc(sizeof(char *) * argc);
+
+               	token = strtok(command_copy, delim);
+               	while (token)
+               	{
+              		argv[i] = token;
+              		token = strtok(NULL, delim);
+               		i++;
+            	}
+       		argv[i] = NULL;
+
+
+
+
 		if (strcmp(command, "exit") == 0)
 		{
 			exit(0);
@@ -67,18 +91,11 @@ else{
 
 			setenv(key, value, 1);
 		}
-		if (strncmp(command, "unsetenv", 8) == 0)
-		{
-			token = strtok(command, delim);
-			token = strtok(NULL, delim);
-
-			unsetenv(token);
-		}
 		
 		pid = fork();
 		if (pid == 0)
 		{
-
+		/*
 			command_copy = strdup(command);
 
 			token = strtok(command, delim);
@@ -98,7 +115,7 @@ else{
 				i++;
 			}
 			argv[i] = NULL;
-
+		*/
 
 			path_copy = strdup(path);
 			token = strtok(path_copy, ":");
@@ -134,7 +151,7 @@ else{
 		}
 	}
 
-		free(command), free(command_copy), free(argv);
+		free(command), free(command_copy), free(argv), free(path_copy);
 
 		return (0);
 }
