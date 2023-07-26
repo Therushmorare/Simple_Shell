@@ -8,7 +8,7 @@
 
 int main(void)
 {
-	char *shell_prompt_symb = "$ ", *command = NULL, *command_copy = NULL, *token;
+	char *shell_prompt_symb = "($) ", *command = NULL, *command_copy = NULL, *token;
 	ssize_t chars_input;
 	size_t n = 0;
 	int argc = 0, i = 0, is_on = 1, exec, status, exit_status, last_exit = 0;
