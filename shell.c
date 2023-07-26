@@ -1,50 +1,143 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
+#include "shell.h"
 
-int main(int ac, char **argv)
+/**
+ * main - function that creates a shell
+ *
+ * Return: always 0
+ */
+
+int main(void)
 {
-	char *shell_prompt_symb = "$";
-	char *user_input=NULL;
-	char *user_input_cpy=NULL;
+	char *shell_prompt_symb = "$ ", *command = NULL, *command_copy = NULL, *token;
 	ssize_t chars_input;
-	size_t itr = 0;
-	int i = 0;
-	const char *delim = "\n";
-	char *str_tokens;
-	char **argv;
-	int tokens_len = 0;
+	size_t n = 0;
+	int argc = 0, i = 0, is_on = 1, exec, status, exit_status, last_exit = 0;
+	const char *delim = " \n", *path = getenv("PATH");
+	pid_t pid;
+	char full_path[1024], *path_copy, **argv = NULL, *token1, *key, *value;
+	struct stat st;
 
-	//run the shell in an infinite loop only to be exited by the exit() sys call
-	while(1)
+	while (is_on)
 	{
-		//shell prompt symb
 		printf("%s", shell_prompt_symb);
+		chars_input = getline(&command, &n, stdin);
 
-		//get user input and print it
-		chars_input = getline(&user_input, &itr, stdin);
-
-		//validate getline, use -1 as condition check since it returns -1 on success
-		if(chars_input == -1)//remeber this is what we spoke about during our meeting
+		if (chars_input == -1)
 		{
 			printf("No input provided\n");
 			return (-1);
 		}
+		if (command[chars_input - 1] == '\n')
+		{
+			command[chars_input - 1] = '\0';
+		}
+		if (strcmp(command, "exit") == 0)
+		{
+			exit(0);
+		}
+		else if (strncmp(command, "exit",  4) == 0)
+		{
+			token = strtok(command, delim);
+			token = strtok(NULL, delim);
+			exit_status = atoi(token);
 
-		//print user command back
-		printf("%s\n", user_input);//and i told you about printing the getline values
+			exit(exit_status);
+		}
 
-		/**
-		 * before using execution commands and system calls
-		 * all i need is to tokenize user_input by saving it to user_input_cpy
-		 * save the user_input_cpy in tokens
-		 * use tokens to validate user input 
-		 */
+		if (strncmp(command, "setenv", 6) == 0)
+		{
+			token1 = strtok(command, delim);
+			token1 = strtok(NULL, delim);
+
+			token = strtok(token1, "=");
+			key = token;
+			token = strtok(NULL, "=");
+			value = token;
+
+			setenv(key, value, 1);
+		}
+		if (strncmp(command, "unsetenv", 8) == 0)
+		{
+			token = strtok(command, delim);
+			token = strtok(NULL, delim);
+
+			unsetenv(token);
+		}
+
+		if (strcmp(command, "echo $$") == 0)
+		{
+			printf("%u\n", getppid());
+		}
+	
+		if (strcmp(command, "echo $PATH") == 0)
+		{
+			printf("%s\n", path);
+		}
+		if (strcmp(command, "echo $?") == 0)
+		{
+			printf("%d\n", last_exit);
+		}
+		
+		pid = fork();
+		if (pid == 0)
+		{
+
+			command_copy = strdup(command);
+
+			token = strtok(command, delim);
+			while (token)
+			{
+				token = strtok(NULL, delim);
+				argc++;
+			}
+
+			argv = malloc(sizeof(char *) * argc);
+
+			token = strtok(command_copy, delim);
+			while (token)
+			{
+				argv[i] = token;
+				token = strtok(NULL, delim);
+				i++;
+			}
+			argv[i] = NULL;
 
 
-		free(user_input);
+			path_copy = strdup(path);
+			token = strtok(path_copy, ":");
+			while (token)
+			{
+				snprintf(full_path, sizeof(full_path), "%s/%s", token, argv[0]);
+
+
+				if (stat(full_path, &st) == 0)
+				{
+					argv[0] = full_path;
+					exec = execve(argv[0], argv, environ);
+					if (exec == -1)
+					{
+						printf(":-(\n");
+						is_on = 0;
+					}
+				}
+				token = strtok(NULL, ":");
+			}
+
+			exec = execve(argv[0], argv, environ);
+			if (exec == -1)
+			{
+				printf(":( command not found\n");
+				is_on = 0;
+			}
+		}
+		else
+		{
+			wait(&status);
+			last_exit = WEXITSTATUS(status);
+		}
 	}
 
-	return (0);
+		free(command), free(command_copy), free(argv);
+
+		return (0);
 }
