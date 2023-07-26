@@ -116,7 +116,7 @@ int main(void)
 					exec = execve(argv[0], argv, environ);
 					if (exec == -1)
 					{
-						printf(":-(\n");
+						printf("./shell: No such file or directory\n");
 						is_on = 0;
 					}
 				}
@@ -126,7 +126,7 @@ int main(void)
 			exec = execve(argv[0], argv, environ);
 			if (exec == -1)
 			{
-				printf(":( command not found\n");
+				printf("./shell: No such file or directory\n");
 				is_on = 0;
 			}
 		}
