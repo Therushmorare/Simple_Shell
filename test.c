@@ -31,6 +31,73 @@ int main(void)
 		{
 			command[chars_input - 1] = '\0';
 		}
+                
+		command_copy = strdup(command);
+
+               	token = strtok(command, delim);
+               	while (token)
+              	{
+               		token = strtok(NULL, delim);
+               		argc++;
+             	}
+
+          	argv = malloc(sizeof(char *) * argc);
+
+             	token = strtok(command_copy, delim);
+              	while (token)
+             	{
+               		argv[i] = token;
+                	token = strtok(NULL, delim);
+               		i++;
+    		}
+        	argv[i] = NULL;
+		
+              	path_copy = strdup(path);
+               	token = strtok(path_copy, ":");
+               	while (token)
+           	{
+			
+             		snprintf(full_path, sizeof(full_path), "%s/%s", token, argv[0]);
+
+			if (stat(full_path, &st) == 0) // /usr/bin/ls---- /usr/bin//bin/ls
+			{
+				argv[0] = full_path;
+
+				pid = fork();
+				if (pid == 0)
+				{
+					exec = execve(argv[0], argv, environ); // execve("/bin/ls", arg...);
+					if (exec == -1)
+					{
+						printf("./shell: No such file or directory\n");
+						is_on = 0;
+					}
+
+				}
+				else
+				{
+					wait(&status);
+				}
+
+			}
+			token = strtok(NULL, ":");
+
+
+		}
+		/*
+		exec = execve(argv[0], argv, environ);
+		if (exec == -1)
+		{
+			printf("./shell: No such file or directory\n");
+			is_on = 0;
+		}
+		if (pid != 0)
+		{
+			wait(&status);
+		}*/
+		
+
+
 		if (strcmp(command, "exit") == 0)
 		{
 			exit(0);
@@ -77,7 +144,7 @@ int main(void)
 		{
 			printf("%d\n", last_exit);
 		}
-		
+		/*
 		pid = fork();
 		if (pid == 0)
 		{
@@ -134,7 +201,7 @@ int main(void)
 		{
 			wait(&status);
 			last_exit = WEXITSTATUS(status);
-		}
+		}*/
 	}
 
 		free(command), free(command_copy), free(argv), free(path_copy);
