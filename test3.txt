@@ -44,4 +44,4 @@ if (strcmp(command, "$PATH") == 0)
 	printf("%s\n", path_name)
 }
 
-
+edit
