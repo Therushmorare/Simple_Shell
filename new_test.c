@@ -13,7 +13,7 @@ int main(void)
 	char *shell_prompt_symb = "$ ", *command = NULL, *command_copy = NULL, *token;
 	ssize_t chars_input;
 	size_t n = 0;
-	int argc = 0, i = 0, is_on = 1, exec, status, exit_status, set_status;
+	int argc = 0, i = 0, is_on = 1, exec, status, exit_status, set_status, last_exit = 0;
 	const char *delim = " \n", *path = getenv("PATH");
 	pid_t pid;
 	char full_path[1024], *path_copy, **argv = NULL, *token1, *key, *value;
@@ -74,6 +74,20 @@ else{
 
 			unsetenv(token);
 		}
+
+		if (strcmp(command, "echo $$") == 0)
+		{
+			printf("%u\n", getpid());
+		}
+	
+		if (strcmp(command, "echo $PATH") == 0)
+		{
+			printf("%s\n", path);
+		}
+		if (strcmp(command, "echo $?") == 0)
+		{
+			printf("%d\n", last_exit);
+		}
 		
 		pid = fork();
 		if (pid == 0)
@@ -131,6 +145,7 @@ else{
 		else
 		{
 			wait(&status);
+			last_exit = WEXITSTATUS(status);
 		}
 	}
 
