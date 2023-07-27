@@ -141,3 +141,42 @@ int countPATH(char *path)
     }
     return (count);
 }
+
+
+/**
+ * get_command - gets command using getline and stores it in a buffer
+ *
+ * Return: buffer
+ */
+
+char *get_command(void)
+{
+	ssize_t char_input = 0;
+       	size_t n = 0;
+	char *command = NULL;
+	int i = 0;
+
+	char_input = getline(&command, &n, stdin);
+       	if (char_input == -1)
+	{
+		free(command);
+		if (isatty(STDIN_FILENO) != 0)
+		{
+			write(STDOUT_FILENO, "\n", 1);
+		}
+		exit(0);
+	}
+	if (command[char_input - 1] == '\n')
+	{
+		command[char_input - 1] = '\0';
+	}
+	for (i = 0; command[i]; i++)
+	{
+		if (command[i] == '#' && command[i - 1] == ' ')
+		{
+			command[i] = '\0';
+			break;
+		}
+	}
+	return (command);
+}

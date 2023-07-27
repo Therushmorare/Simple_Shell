@@ -10,26 +10,16 @@ char *fullpath(char **argv, char *path);
 int main(void)
 {
 	char *shell_prompt_symb = "($) ", *command = NULL, *command_copy = NULL, *token;
-	ssize_t chars_input;
-	size_t n = 0;
 	int argc = 0, i = 0, is_on = 1, exit_status, last_exit = 0;
-	char *delim = " \n", *path = getenv("PATH");
+	char *delim = " \n", *path = getenv("PATH"), *buffer = NULL;
 	char full_path[1024], **argv = NULL, *token1, *key, *value;
 
 	while (is_on)
 	{
 		printf("%s", shell_prompt_symb);
-		chars_input = getline(&command, &n, stdin);
-
-		if (chars_input == -1)
+		buffer = get_command();
+		if (*buffer != '\0')
 		{
-			printf("\n");
-			return (-1);
-		}
-		if (command[chars_input - 1] == '\n')
-		{
-			command[chars_input - 1] = '\0';
-		}
                 argc = 0;
 		
 		
@@ -107,11 +97,15 @@ int main(void)
 		
 		strcpy(full_path, fullpath(argv, path));
 		exit_status = childprocess(argv, command, full_path);
-
+		}
+		else
+		{
+			free(buffer);
+		}
 	}
 		
 
-		/*free(command), free(command_copy), free(path_copy), free(argv);*/
+		
 		free(command);
 		return (0);
 }
