@@ -109,8 +109,9 @@ int main(void)
 		exit_status = childprocess(argv, command, full_path);
 
 	}
+		
 
 		/*free(command), free(command_copy), free(path_copy), free(argv);*/
-
+		free(command);
 		return (0);
 }

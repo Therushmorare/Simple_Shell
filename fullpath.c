@@ -11,7 +11,7 @@
 char *fullpath(char **argv, char *path)
 {
 	char *token, *fullpath, *path_copy = NULL;
-	int pathflag = 0;
+	int pathflag = 0, path_len = 0, count = 0, token_len = 0;
        	struct stat st;
 
 	fullpath = (char *)malloc(sizeof(char) * 1024);
@@ -21,6 +21,7 @@ char *fullpath(char **argv, char *path)
 		exit(1);
 	}
 	path_copy = strdup(path);
+	path_len = countPATH(path_copy);
 	token = strtok(path_copy, "=");
 	while (token)
 	{
@@ -31,12 +32,20 @@ char *fullpath(char **argv, char *path)
 			pathflag = 1;
 			break;
 		}
-		else if (stat(argv[0], &st) == 0)
+		if (count < path_len - 2)
 		{
-			strcpy(fullpath, argv[0]);
-			pathflag = 1;
-			break;
+			token_len = strlen(token);
+			if (token[token_len + 1] == ':')
+			{
+				if (stat(argv[0], &st) == 0)
+				{
+					strcpy(fullpath, argv[0]);
+					pathflag = 1;
+					break;
+				}
+			}
 		}
+		count++;
 		token = strtok(NULL, ":");
 	}
 	if (pathflag == 0)
@@ -101,4 +110,34 @@ int childprocess(char **argv, char *command, char *fullpath)
 		free(command);
 	}
 	return (exit_status);
+}
+
+
+
+/**
+ * countPATH - counts the number of PATH members
+ * @str: pointer to string to count
+ *
+ * Return: number of PATH members
+ */
+
+int countPATH(char *path)
+{
+    int i;
+    int searchflag = 1;
+    int count = 0;
+
+    for (i = 0; path[i]; i++)
+    {
+        if (path[i] != ':' && searchflag == 1)
+        {
+            count += 1;
+            searchflag = 0;
+        }
+        if (path[i + 1] == ':')
+        {
+            searchflag = 1;
+        }
+    }
+    return (count);
 }

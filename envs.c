@@ -1,4 +1,4 @@
-#include <shell.h>
+#include "shell.h"
 
 /**
  * exit_func - function to be used to exit shell
@@ -6,7 +6,7 @@
  * Return: 0
  */
 
-void exit_func(char **chars_input)
+void exit_func(char *chars_input)
 {
 	if (strncmp(chars_input, "exit") == 0)
 	{
