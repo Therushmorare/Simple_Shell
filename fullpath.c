@@ -10,10 +10,16 @@
 
 char *fullpath(char **argv, char *path)
 {
-	char *token, fullpath[1024], *path_copy = NULL;
+	char *token, *fullpath, *path_copy = NULL;
 	int pathflag = 0;
        	struct stat st;
 
+	fullpath = (char *)malloc(sizeof(char) * 1024);
+	if (fullpath == NULL)
+	{
+		fprintf(stderr, "Memory allocation failed.\n");
+		exit(1);
+	}
 	path_copy = strdup(path);
 	token = strtok(path_copy, "=");
 	while (token)
