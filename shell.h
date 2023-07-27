@@ -10,5 +10,6 @@
 #include <sys/stat.h>
 
 extern char **environ;
+int builtin_checker(const char *user_command);
 
 #endif
