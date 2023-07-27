@@ -87,13 +87,17 @@ int main(void)
 				break;
 
 			}
-			if (stat(full_path, &st) != 0 || stat(argv[0], &st) != 0)
+			/*if (stat(full_path, &st) != 0 || stat(argv[0], &st) != 0)
 			{
 				fprintf(stderr, "./shell: No such file or directory\n");
-			}
+			}*/
 			token = strtok(NULL, ":");
 
 		}
+		if (stat(full_path, &st) != 0 || stat(argv[0], &st) != 0)
+                        {
+                                fprintf(stderr, "./shell: No such file or directory\n");
+                        }
 		
 
 
