@@ -135,9 +135,10 @@ int main(void)
 			wait(&status);
 			last_exit = WEXITSTATUS(status);
 		}
+		free(command), free(command_copy), free(argv), free(path_copy);
 	}
 
-		free(command), free(command_copy), free(argv), free(path_copy);
+		/*free(command), free(command_copy), free(argv), free(path_copy);*/
 
 		return (0);
 }
