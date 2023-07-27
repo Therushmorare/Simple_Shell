@@ -125,6 +125,7 @@ int main(void)
 		{
 			fprintf(stdout, "%d\n", last_exit);
 		}
+
 		
 		free(command_copy), free(path_copy);	
 	}
