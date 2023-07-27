@@ -11,5 +11,8 @@
 
 extern char **environ;
 int builtin_checker(const char *user_command);
+char *fullpath(char **argv, char *path);
+int childprocess(char **argv, char *command, char *fullpath);
+int countPATH(char *path);
 
 #endif
