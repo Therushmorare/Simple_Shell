@@ -10,7 +10,7 @@
 
 char *fullpath(char **argv, char *path)
 {
-	char *token, *fullpath = NULL, *path_copy = NULL;
+	char *token, fullpath[1024], *path_copy = NULL;
 	int pathflag = 0;
        	struct stat st;
 
@@ -18,7 +18,7 @@ char *fullpath(char **argv, char *path)
 	token = strtok(path_copy, "=");
 	while (token)
 	{
-		snprintf(full_path, sizeof(full_path), "%s/%s", token, argv[0]);
+		snprintf(fullpath, sizeof(fullpath), "%s/%s", token, argv[0]);
 
 		if (stat(fullpath, &st) == 0)
 		{
@@ -27,7 +27,7 @@ char *fullpath(char **argv, char *path)
 		}
 		else if (stat(argv[0], &st) == 0)
 		{
-			fullpath = argv[0];
+			strcpy(fullpath, argv[0]);
 			pathflag = 1;
 			break;
 		}
@@ -35,7 +35,7 @@ char *fullpath(char **argv, char *path)
 	}
 	if (pathflag == 0)
 	{
-		fullpath = argv[0];
+		strcpy(fullpath, argv[0]);
 	}
 	free(path_copy);
 	return (fullpath);

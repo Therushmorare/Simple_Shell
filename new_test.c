@@ -1,5 +1,6 @@
 #include "shell.h"
-
+int childprocess(char **argv, char *command, char *fullpath);
+char *fullpath(char **argv, char *path);
 /**
  * main - function that creates a shell
  *
@@ -11,11 +12,9 @@ int main(void)
 	char *shell_prompt_symb = "($) ", *command = NULL, *command_copy = NULL, *token;
 	ssize_t chars_input;
 	size_t n = 0;
-	int argc = 0, i = 0, is_on = 1, exec, status, exit_status, last_exit = 0;
-	const char *delim = " \n", *path = getenv("PATH");
-	pid_t pid;
-	char full_path[1024], *path_copy, **argv = NULL, *token1, *key, *value;
-	struct stat st;
+	int argc = 0, i = 0, is_on = 1, exit_status, last_exit = 0;
+	char *delim = " \n", *path = getenv("PATH");
+	char full_path[1024], **argv = NULL, *token1, *key, *value;
 
 	while (is_on)
 	{
@@ -32,9 +31,6 @@ int main(void)
 			command[chars_input - 1] = '\0';
 		}
                 argc = 0;
-	       	i =0;
-		free(argv);
-		argv = NULL;
 		
 		
 		command_copy = strdup(command);
@@ -56,26 +52,7 @@ int main(void)
                		i++;
     		}
         	argv[i] = NULL;
-		
-              	path_copy = strdup(path);
-               	token = strtok(path_copy, ":");
-               	while (token)
-           	{
-             		snprintf(full_path, sizeof(full_path), "%s/%s", token, argv[0]);
-			if (stat(full_path, &st) == 0)
-			{
-				break;
-
-			}
-			else if (stat(argv[0], &st) == 0)
-			{
-				full_path = argv[0];
-				break;
-			}
-			token = strtok(NULL, ":");
-
-		}
-		free(path_copy);
+		 
 		
 
 
@@ -125,12 +102,15 @@ int main(void)
 		{
 			fprintf(stdout, "%d\n", last_exit);
 		}
+		
 
 		
-		free(command_copy), free(path_copy);	
+		full_path = fullpath(argv, path);
+		exit_status = childprocess(argv, command, full_path);
+
 	}
 
-		free(command), free(command_copy), free(path_copy), free(argv);
+		/*free(command), free(command_copy), free(path_copy), free(argv);*/
 
 		return (0);
 }
