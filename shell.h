@@ -11,5 +11,7 @@
 
 extern char **environ;
 int builtin_checker(const char *user_command);
-
+void exit_func(char *chars_input);
+void setenv_func(char **chars_input);
+void unsetenv_func(char **chars_input);
 #endif
