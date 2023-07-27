@@ -105,12 +105,13 @@ int main(void)
 		
 
 		
-		full_path = fullpath(argv, path);
+		strcpy(full_path, fullpath(argv, path));
 		exit_status = childprocess(argv, command, full_path);
 
 	}
+		
 
 		/*free(command), free(command_copy), free(path_copy), free(argv);*/
-
+		free(command);
 		return (0);
 }
