@@ -77,7 +77,7 @@ int main(void)
 		{
 			printf("%d\n", last_exit);
 		}
-		
+		free(argv), free(path_copy);
 		pid = fork();
 		if (pid == 0)
 		{
@@ -135,10 +135,10 @@ int main(void)
 			wait(&status);
 			last_exit = WEXITSTATUS(status);
 		}
-		free(command), free(command_copy), free(argv), free(path_copy);
+		free(command), free(command_copy);/* free(argv), free(path_copy);*/
 	}
 
-		/*free(command), free(command_copy), free(argv), free(path_copy);*/
+		free(command), free(command_copy), free(argv), free(path_copy);
 
 		return (0);
 }

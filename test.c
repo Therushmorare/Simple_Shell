@@ -34,7 +34,9 @@ int main(void)
                 argc = 0;
 	       	i =0;
 		free(argv);
-		argv = NULL;	
+		argv = NULL;
+		
+		
 		command_copy = strdup(command);
 
                	token = strtok(command, delim);
@@ -72,7 +74,7 @@ int main(void)
 					{
 						if (execve(argv[0], argv, environ) == -1)
 						{
-							printf("./shell: No such file or directory\n");
+							fprintf(stderr, "./shell: No such file or directory\n");
 							is_on = 0;
 						}
 					}
@@ -84,6 +86,10 @@ int main(void)
 				}
 				break;
 
+			}
+			if (stat(full_path, &st) != 0 || stat(argv[0], &st) != 0)
+			{
+				fprintf(stderr, "./shell: No such file or directory\n");
 			}
 			token = strtok(NULL, ":");
 
@@ -126,22 +132,22 @@ int main(void)
 
 		if (strcmp(command, "echo $$") == 0)
 		{
-			printf("%u\n", getppid());
+			fprintf(stdout, "%u\n", getppid());
 		}
 	
 		if (strcmp(command, "echo $PATH") == 0)
 		{
-			printf("%s\n", path);
+			fprintf(stdout, "%s\n", path);
 		}
 		if (strcmp(command, "echo $?") == 0)
 		{
-			printf("%d\n", last_exit);
+			fprintf(stdout, "%d\n", last_exit);
 		}
 		
-		free(command), free(command_copy), free(path_copy);		
+		free(command_copy), free(path_copy);	
 	}
 
-		/*free(command), free(command_copy), free(argv), free(path_copy);*/
+		free(command), free(command_copy), free(path_copy), free(argv);
 
 		return (0);
 }
