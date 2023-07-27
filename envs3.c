@@ -6,7 +6,7 @@
  * Return: 0
  */
 
-void unsetenv_func(char **chars_input)
+void unsetenv_func(char *chars_input)
 {
 	if (strncmp(chars_input, "unsetenv", 8) == 0)
 	{

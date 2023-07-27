@@ -6,7 +6,7 @@
  * Return: 0
  */
 
-void setenv_func(char **chars_input)
+void setenv_func(char *chars_input)
 {
 	if (strncmp(chars_input, "setenv", 6) == 0)
 	{
