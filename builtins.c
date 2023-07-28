@@ -12,7 +12,7 @@ int builtin_checker(const char *user_command)
 {
 	int i;
 	const char *builtins[] = {
-	"env", "setenv", "exit", "unsetenv"
+	"env", "setenv", "exit", "unsetenv", "cd"
 	};
 
 	for (int i = 0; i < sizeof(builtins) / sizeof(builtins[0]); ++i)

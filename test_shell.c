@@ -33,10 +33,26 @@ int main(void)
                 }
 
 		/* code to be tested*/
-		env_func(command);
-		setenv_func(command);
-		unsetenv_func(command);
-		/*exit_func(command);*/
+		if (command[chars_input - 1] == "env")
+		{
+			env_func(command);
+		}
+		else if (command[chars_input -1] == "setenv")
+		{
+			setenv_func(command);
+		}
+		else if (command[chars_input -1] == "unsetenv")
+		{
+			unsetenv_func(command);
+		}
+		else
+		{
+			exit_func(command);
+		}
+		//env_func(command);
+		//setenv_func(command);
+		//unsetenv_func(command);
+		//exit_func(command);
 		
 	}
 }
