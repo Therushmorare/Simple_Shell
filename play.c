@@ -8,33 +8,36 @@
 
 int main(void)
 {
-	char *buffer = NULL, *command_copy = NULL, *token;
-	int argc = 0, i = 0, is_on = 1, exit_status, last_exit = 0;
-	char *delim = " \n", *path = getenv("PATH");
-	char full_path[1024], **argv, *token1, *key, *value;
-
+	char *command = NULL;
+	int is_on = 1;
+	char *path = getenv("PATH");
+	char full_path[1024], **argv;
 	
 	while (is_on)
 	{
 		argv = NULL;
 		printf("($) ");
-		buffer = get_command();
-		if (*buffer != '\0')
+		command = get_command();
+		if (*command != '\0')
 		{
-			argv = argv_tokenize(buffer);
+			argv = argv_tokenize(command);
 			if (argv == NULL)
 			{
-				free(buffer);
+				free(command);
 				continue;
 			}
-
+			/*env_func(command);*/
+			setenv_func(command);
+			unsetenv_func(command);
+			exit_func(command);
 			strcpy(full_path, fullpath(argv, path));
-			exit_status = childprocess(argv, buffer, full_path);
+			childprocess(argv, command, full_path);
 	
 		}
 		else
 		{
-			free(buffer);
+			free(command);
+			exit(127);
 		}
 	}
 		return (0);

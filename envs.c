@@ -28,9 +28,6 @@ void exit_func(char *chars_input)
 			exit(exit_status);
 		}
 	}
-	else
-	{
-		exit(127);
-	}
+	
 
 }

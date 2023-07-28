@@ -10,12 +10,12 @@
 
 int builtin_checker(const char *user_command)
 {
-	int i;
+	long unsigned int i;
 	const char *builtins[] = {
 	"env", "setenv", "exit", "unsetenv", "cd"
 	};
-
-	for (int i = 0; i < sizeof(builtins) / sizeof(builtins[0]); ++i)
+	i = 0;
+	for (i = 0; i < sizeof(builtins) / sizeof(builtins[0]); ++i)
 	{
 		if (strcmp(user_command, builtins[i]) == 0)
 		{

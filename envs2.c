@@ -10,7 +10,8 @@ void setenv_func(char *chars_input)
 {
 	char *token, *token1, *key, *value;
 	char *delim = " \n";
-
+	
+	
 	if (strncmp(chars_input, "setenv", 6) == 0)
 	{
 		token1 = strtok(chars_input, delim);
@@ -24,4 +25,5 @@ void setenv_func(char *chars_input)
 			setenv(key, value, 1);
 		}
 	}
+	return;
 }
