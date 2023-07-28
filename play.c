@@ -16,9 +16,7 @@ int main(void)
 	
 	while (is_on)
 	{
-		
 		argv = NULL;
-		/*display_prompt();*/
 		printf("($) ");
 		buffer = get_command();
 		if (*buffer != '\0')
@@ -30,12 +28,8 @@ int main(void)
 				continue;
 			}
 
-		
 			strcpy(full_path, fullpath(argv, path));
-			printf("in new_test.c - argv[0] = %s\n", argv[0]);
-			printf("full path = %s\n", full_path);
 			exit_status = childprocess(argv, buffer, full_path);
-		/*free(command_copy);*/
 	
 		}
 		else
@@ -43,9 +37,5 @@ int main(void)
 			free(buffer);
 		}
 	}
-		
-
-		
-		/*free(command);*/
 		return (0);
 }

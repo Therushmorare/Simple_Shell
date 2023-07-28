@@ -25,14 +25,10 @@ char *fullpath(char **argv, char *path)
 	token = strtok(path_copy, ":");
 	while (token)
 	{
-		/*
-		snprintf(fullpath, sizeof(fullpath), "%s/%s", token, argv[0]);*/
 		strcpy(fullpath, token);
 		strcat(fullpath, "/");
 		strcat(fullpath, argv[0]);
-		printf("token -> %s\n", token);
-		printf("argv[0] -> %s\n", argv[0]);
-		printf("concat -> %s\n", fullpath);
+	
 		if (stat(fullpath, &st) == 0)
 		{
 			pathflag = 1;
@@ -40,13 +36,11 @@ char *fullpath(char **argv, char *path)
 		}
 		if (count < path_len - 2)
 		{
-			printf("in\n");
 			token_len = strlen(token);
 			if (token[token_len + 1] == ':')
 			{
 				if (stat(argv[0], &st) == 0)
 				{
-					printf("inner\n");
 					strcpy(fullpath, argv[0]);
 					pathflag = 1;
 					break;
@@ -60,8 +54,7 @@ char *fullpath(char **argv, char *path)
 	{
 		strcpy(fullpath, argv[0]);
 	}
-	/*free(path_copy);*/
-	printf("exiting\n");
+	
 	return (fullpath);
 
 
@@ -90,7 +83,6 @@ int childprocess(char **argv, char *command, char *fullpath)
 	}
 	else if (pid == 0)
 	{
-		printf("executing\n");
 		exec = execve(fullpath, argv, environ);
 		if (exec == -1)
 		{
@@ -108,7 +100,7 @@ int childprocess(char **argv, char *command, char *fullpath)
 	}
 		
 		
-		/*printf("in parent\n");*/
+		
 		wait(&status);
 		exit_status = WEXITSTATUS(status);
 		
