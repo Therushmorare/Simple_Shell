@@ -1,4 +1,5 @@
 #include "shell.h"
+#include<string.h>
 
 /**
  * exit_func - function to be used to exit shell
@@ -8,7 +9,7 @@
 
 void exit_func(char *chars_input)
 {
-	if (strncmp(chars_input, "exit") == 0)
+	if (strcmp(chars_input, "exit") == 0)
 	{
 		if (builtin_checker(chars_input))
 			exit(0);
@@ -28,5 +29,4 @@ void exit_func(char *chars_input)
 		exit(127);
 	}
 
-	return (0);
 }

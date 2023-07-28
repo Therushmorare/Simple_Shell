@@ -33,6 +33,7 @@ int main(void)
                 }
 
 		/* code to be tested*/
-		exit_func(command);
+		//exit_func(command);
+		env_func(command);
 	}
 }
