@@ -11,7 +11,7 @@
 char *fullpath(char **argv, char *path)
 {
 	char *token, *fullpath, *path_copy = NULL;
-	int pathflag = 0, path_len = 0, count = 0, token_len = 0;
+	int pathflag = 0,path_len = 0, count = 0, token_len = 0;
        	struct stat st;
 
 	fullpath = (char *)malloc(sizeof(char) * 1024);
@@ -22,11 +22,13 @@ char *fullpath(char **argv, char *path)
 	}
 	path_copy = strdup(path);
 	path_len = countPATH(path_copy);
-	token = strtok(path_copy, "=");
+	token = strtok(path_copy, ":");
 	while (token)
 	{
 		snprintf(fullpath, sizeof(fullpath), "%s/%s", token, argv[0]);
-
+		printf("token -> %s\n", token);
+		printf("argv[0] -> %s\n", argv[0]);
+		printf("concat -> %s\n", fullpath);
 		if (stat(fullpath, &st) == 0)
 		{
 			pathflag = 1;
@@ -34,11 +36,13 @@ char *fullpath(char **argv, char *path)
 		}
 		if (count < path_len - 2)
 		{
+			printf("in\n");
 			token_len = strlen(token);
 			if (token[token_len + 1] == ':')
 			{
 				if (stat(argv[0], &st) == 0)
 				{
+					printf("inner\n");
 					strcpy(fullpath, argv[0]);
 					pathflag = 1;
 					break;
@@ -52,7 +56,8 @@ char *fullpath(char **argv, char *path)
 	{
 		strcpy(fullpath, argv[0]);
 	}
-	free(path_copy);
+	/*free(path_copy);*/
+	printf("exiting\n");
 	return (fullpath);
 
 
@@ -81,6 +86,7 @@ int childprocess(char **argv, char *command, char *fullpath)
 	}
 	else if (pid == 0)
 	{
+		printf("executing\n");
 		exec = execve(fullpath, argv, environ);
 		if (exec == -1)
 		{
@@ -95,11 +101,13 @@ int childprocess(char **argv, char *command, char *fullpath)
 			free(command);
 			exit(127);
 		}
-		else
-		{
-			wait(&status);
-			exit_status = WEXITSTATUS(status);
-		}
+	}
+		
+		
+		/*printf("in parent\n");*/
+		wait(&status);
+		exit_status = WEXITSTATUS(status);
+		
 		i = 0;
 		for (i = 0; argv[i] != NULL; i++)
 		{
@@ -108,7 +116,7 @@ int childprocess(char **argv, char *command, char *fullpath)
 		}
 		free(argv);
 		free(command);
-	}
+	
 	return (exit_status);
 }
 
@@ -172,11 +180,53 @@ char *get_command(void)
 	}
 	for (i = 0; command[i]; i++)
 	{
-		if (command[i] == '#' && command[i - 1] == ' ')
+		if (command[i] == '#')
 		{
 			command[i] = '\0';
 			break;
 		}
 	}
 	return (command);
+}
+
+
+/**
+ * argv_tokenize - tokenizes argv
+ * @buffer: buffer
+ *
+ * Return: returns tokenized argv
+ */
+
+char **argv_tokenize(char *buffer)
+{
+	char *delim = " \n", *token, **argv;
+	int argc = 0, i = 0, j = 0, argcflag = 1;
+
+	for (i = 0; buffer[i]; i++)
+    	{
+        	if (buffer[i] != ' ' && argcflag == 1)
+        	{
+            		argc += 1;
+            		argcflag = 0;
+        	}
+        	if (buffer[i + 1] == ' ')
+            		argcflag = 1;
+    	}
+
+	argv = malloc(sizeof(char *) * (argc + 1));
+	if (argv == NULL)
+	{
+		exit(1);
+	}
+
+	token = strtok(buffer, delim);
+	while (token)
+	{
+		argv[j] = strdup(token);
+		token = strtok(NULL, delim);
+		j++;
+	}
+	argv[j] = NULL;
+
+	return (argv);	
 }

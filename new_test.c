@@ -12,20 +12,22 @@ int main(void)
 	char *shell_prompt_symb = "($) ", *command = NULL, *command_copy = NULL, *token;
 	int argc = 0, i = 0, is_on = 1, exit_status, last_exit = 0;
 	char *delim = " \n", *path = getenv("PATH"), *buffer = NULL;
-	char full_path[1024], **argv = NULL, *token1, *key, *value;
+	char full_path[1024], **argv, *token1, *key, *value;
 
 	while (is_on)
 	{
 		printf("%s", shell_prompt_symb);
+		argv = NULL;
+		argc = 0;
 		buffer = get_command();
 		if (*buffer != '\0')
 		{
-                argc = 0;
+                
 		
 		
-		command_copy = strdup(command);
+		command_copy = strdup(buffer);
 
-               	token = strtok(command, delim);
+               	token = strtok(buffer, delim);
                	while (token)
               	{
                		token = strtok(NULL, delim);
@@ -45,23 +47,23 @@ int main(void)
 		 
 		
 
-
-		if (strcmp(command, "exit") == 0)
+		/*
+		if (strcmp(buffer, "exit") == 0)
 		{
 			exit(0);
 		}
-		else if (strncmp(command, "exit",  4) == 0)
+		else if (strncmp(buffer, "exit",  4) == 0)
 		{
-			token = strtok(command, delim);
+			token = strtok(buffer, delim);
 			token = strtok(NULL, delim);
 			exit_status = atoi(token);
 
 			exit(exit_status);
 		}
 
-		if (strncmp(command, "setenv", 6) == 0)
+		if (strncmp(buffer, "setenv", 6) == 0)
 		{
-			token1 = strtok(command, delim);
+			token1 = strtok(buffer, delim);
 			token1 = strtok(NULL, delim);
 
 			token = strtok(token1, "=");
@@ -71,9 +73,9 @@ int main(void)
 
 			setenv(key, value, 1);
 		}
-		if (strncmp(command, "unsetenv", 8) == 0)
+		if (strncmp(buffer, "unsetenv", 8) == 0)
 		{
-			token = strtok(command, delim);
+			token = strtok(buffer, delim);
 			token = strtok(NULL, delim);
 
 			unsetenv(token);
@@ -91,12 +93,16 @@ int main(void)
 		if (strcmp(command, "echo $?") == 0)
 		{
 			fprintf(stdout, "%d\n", last_exit);
-		}
+		}*/
 		
 
 		
 		strcpy(full_path, fullpath(argv, path));
+		printf("in new_test.c - argv[0] = %s\n", argv[0]);
+		printf("full path = %s\n", full_path);
 		exit_status = childprocess(argv, command, full_path);
+		/*free(command_copy);*/
+	
 		}
 		else
 		{
@@ -106,6 +112,6 @@ int main(void)
 		
 
 		
-		free(command);
+		/*free(command);*/
 		return (0);
 }
