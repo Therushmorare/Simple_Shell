@@ -33,15 +33,15 @@ int main(void)
                 }
 
 		/* code to be tested*/
-		if (command[chars_input - 1] == "env")
+		if (strcmp(command, "env") == 0)
 		{
 			env_func(command);
 		}
-		else if (command[chars_input -1] == "setenv")
+		else if (strcmp(command, "setenv") == 0)
 		{
 			setenv_func(command);
 		}
-		else if (command[chars_input -1] == "unsetenv")
+		else if (strcmp(command, "unsetenv") == 0)
 		{
 			unsetenv_func(command);
 		}
