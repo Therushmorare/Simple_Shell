@@ -16,7 +16,7 @@ int main(void)
 	while (is_on)
 	{
 		argv = NULL;
-		printf("($) ");
+		printf("#cisfun$ ");
 		command = get_command();
 		if (*command != '\0')
 		{
