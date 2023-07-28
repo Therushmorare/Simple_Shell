@@ -25,7 +25,11 @@ char *fullpath(char **argv, char *path)
 	token = strtok(path_copy, ":");
 	while (token)
 	{
-		snprintf(fullpath, sizeof(fullpath), "%s/%s", token, argv[0]);
+		/*
+		snprintf(fullpath, sizeof(fullpath), "%s/%s", token, argv[0]);*/
+		strcpy(fullpath, token);
+		strcat(fullpath, "/");
+		strcat(fullpath, argv[0]);
 		printf("token -> %s\n", token);
 		printf("argv[0] -> %s\n", argv[0]);
 		printf("concat -> %s\n", fullpath);
