@@ -12,7 +12,7 @@ int main(void)
 	int is_on = 1;
 	char *path = getenv("PATH");
 	char full_path[1024], **argv;
-	
+
 	while (is_on)
 	{
 		argv = NULL;
@@ -32,7 +32,7 @@ int main(void)
 			exit_func(command);
 			strcpy(full_path, fullpath(argv, path));
 			childprocess(argv, command, full_path);
-	
+
 		}
 		else
 		{

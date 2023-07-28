@@ -11,8 +11,8 @@
 char *fullpath(char **argv, char *path)
 {
 	char *token, *fullpath, *path_copy = NULL;
-	int pathflag = 0,path_len = 0, count = 0, token_len = 0;
-       	struct stat st;
+	int pathflag = 0, path_len = 0, count = 0, token_len = 0;
+	struct stat st;
 
 	fullpath = (char *)malloc(sizeof(char) * 1024);
 	if (fullpath == NULL)
@@ -28,12 +28,9 @@ char *fullpath(char **argv, char *path)
 		strcpy(fullpath, token);
 		strcat(fullpath, "/");
 		strcat(fullpath, argv[0]);
-	
 		if (stat(fullpath, &st) == 0)
-		{
 			pathflag = 1;
 			break;
-		}
 		if (count < path_len - 2)
 		{
 			token_len = strlen(token);
@@ -51,13 +48,8 @@ char *fullpath(char **argv, char *path)
 		token = strtok(NULL, ":");
 	}
 	if (pathflag == 0)
-	{
 		strcpy(fullpath, argv[0]);
-	}
-	
 	return (fullpath);
-
-
 }
 
 
@@ -98,12 +90,9 @@ int childprocess(char **argv, char *command, char *fullpath)
 			exit(127);
 		}
 	}
-		
-		
-		
 		wait(&status);
 		exit_status = WEXITSTATUS(status);
-		
+
 		i = 0;
 		for (i = 0; argv[i] != NULL; i++)
 		{
@@ -112,38 +101,38 @@ int childprocess(char **argv, char *command, char *fullpath)
 		}
 		free(argv);
 		free(command);
-	
-	return (exit_status);
+
+		return (exit_status);
 }
 
 
 
 /**
  * countPATH - counts the number of PATH members
- * @str: pointer to string to count
+ * @path: pointer to string to count
  *
  * Return: number of PATH members
  */
 
 int countPATH(char *path)
 {
-    int i;
-    int searchflag = 1;
-    int count = 0;
+	int i;
+	int searchflag = 1;
+	int count = 0;
 
-    for (i = 0; path[i]; i++)
-    {
-        if (path[i] != ':' && searchflag == 1)
-        {
-            count += 1;
-            searchflag = 0;
-        }
-        if (path[i + 1] == ':')
-        {
-            searchflag = 1;
-        }
-    }
-    return (count);
+	for (i = 0; path[i]; i++)
+	{
+		if (path[i] != ':' && searchflag == 1)
+		{
+			count += 1;
+			searchflag = 0;
+		}
+		if (path[i + 1] == ':')
+		{
+			searchflag = 1;
+		}
+	}
+	return (count);
 }
 
 
@@ -156,12 +145,12 @@ int countPATH(char *path)
 char *get_command(void)
 {
 	ssize_t char_input = 0;
-       	size_t n = 0;
+	size_t n = 0;
 	char *command = NULL;
 	int i = 0;
 
 	char_input = getline(&command, &n, stdin);
-       	if (char_input == -1)
+	if (char_input == -1)
 	{
 		free(command);
 		if (isatty(STDIN_FILENO) != 0)
@@ -199,15 +188,15 @@ char **argv_tokenize(char *buffer)
 	int argc = 0, i = 0, j = 0, argcflag = 1;
 
 	for (i = 0; buffer[i]; i++)
-    	{
-        	if (buffer[i] != ' ' && argcflag == 1)
-        	{
-            		argc += 1;
-            		argcflag = 0;
-        	}
-        	if (buffer[i + 1] == ' ')
-            		argcflag = 1;
-    	}
+	{
+		if (buffer[i] != ' ' && argcflag == 1)
+		{
+			argc += 1;
+			argcflag = 0;
+		}
+		if (buffer[i + 1] == ' ')
+			argcflag = 1;
+	}
 
 	argv = malloc(sizeof(char *) * (argc + 1));
 	if (argv == NULL)
@@ -224,5 +213,5 @@ char **argv_tokenize(char *buffer)
 	}
 	argv[j] = NULL;
 
-	return (argv);	
+	return (argv);
 }
