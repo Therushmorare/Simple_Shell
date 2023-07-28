@@ -28,6 +28,5 @@ void exit_func(char *chars_input)
 			exit(exit_status);
 		}
 	}
-	
 
 }

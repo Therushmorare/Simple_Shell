@@ -10,7 +10,7 @@
 
 int builtin_checker(const char *user_command)
 {
-	long unsigned int i;
+	unsigned long  int i;
 	const char *builtins[] = {
 	"env", "setenv", "exit", "unsetenv", "cd"
 	};
