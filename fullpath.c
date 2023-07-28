@@ -29,8 +29,10 @@ char *fullpath(char **argv, char *path)
 		strcat(fullpath, "/");
 		strcat(fullpath, argv[0]);
 		if (stat(fullpath, &st) == 0)
+		{
 			pathflag = 1;
 			break;
+		}
 		if (count < path_len - 2)
 		{
 			token_len = strlen(token);
