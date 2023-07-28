@@ -6,6 +6,7 @@
  *
  * Return: 0;
  */
+extern char **environ;
 
 void env_func(char *chars_input)
 {
