@@ -17,6 +17,7 @@ char *fullpath(char **argv, char *path)
 	fullpath = (char *)malloc(sizeof(char) * 1024);
 	if (fullpath == NULL)
 	{
+		free(fullpath);
 		fprintf(stderr, "Memory allocation failed.\n");
 		exit(1);
 	}
@@ -51,6 +52,7 @@ char *fullpath(char **argv, char *path)
 	}
 	if (pathflag == 0)
 		strcpy(fullpath, argv[0]);
+	free(path_copy);
 	return (fullpath);
 }
 
@@ -91,9 +93,11 @@ int childprocess(char **argv, char *command, char *fullpath)
 			free(command);
 			exit(127);
 		}
-	}
+	}else
+	{
 		wait(&status);
 		exit_status = WEXITSTATUS(status);
+	}
 
 		i = 0;
 		for (i = 0; argv[i] != NULL; i++)
@@ -102,7 +106,7 @@ int childprocess(char **argv, char *command, char *fullpath)
 			argv[i] = NULL;
 		}
 		free(argv);
-		free(command);
+		/*free(command);*/
 
 		return (exit_status);
 }
